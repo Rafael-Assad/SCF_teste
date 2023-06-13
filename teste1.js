@@ -1,21 +1,20 @@
-var data =  require("./fakeData");
+const { fakeData } =  require("./fakeData");
 
 const getUser = ( req, res, next ) => {
-    
-    var name =  req.query.name;
+    const userId = parseInt(req.params.id)
 
-    for(let i = 0; i < data.length;  i++) {
-        if(i.name == name) {
-            res.send(data[i]);
-        }
+    const userFound = fakeData.find(user => user.id === userId)
+
+    if(userFound){
+        userFound.accessAmount = userFound.accessAmount + 1 || 1
+        res.status(201).send(userFound)
+    } else{
+        res.status(404).send({"error": "The given user ID  is not on our Database"})
     }
-
 };
 
 const getUsers = ( req, res, next ) => {
-    
-    res.send(data);
-    
+    res.send(fakeData);
 };
 
 module.exports = {
